@@ -15,17 +15,13 @@ jobs:
 
     - name: Install Dependencies
       run: |
-        sudo apt-get update
-        sudo apt-get install -y ca-certificates curl
-        sudo apt-get install -y apt-transport-https
-        sudo curl -fsSLo /etc/apt/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
-        echo "deb [signed-by=/etc/apt/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
-        sudo apt-get update
-        sudo apt-get install -y kubectl
-        sudo apt-get install apt-transport-https ca-certificates gnupg
-        echo "deb https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
-        sudo apt-get update && sudo apt-get install google-cloud-cli --allow-insecure-repositories
-        gcloud components install gke-gcloud-auth-plugin
+        curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-247.0.0-linux-x86_64.tar.gz
+        tar zxvf google-cloud-sdk-247.0.0-linux-x86_64.tar.gz google-cloud-sdk
+        mv /usr/lib/google-cloud-sdk /usr/lib/google-cloud-sdk-ORIG
+        mv google-cloud-sdk /usr/lib/
+        gcloud components update
+        gcloud components install kubectl
+        gcloud components install gke-gcloud-auth-plugin        
         gke-gcloud-auth-plugin --version 
         export USE_GKE_GCLOUD_AUTH_PLUGIN=True
       
