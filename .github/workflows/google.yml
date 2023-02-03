@@ -1,0 +1,36 @@
+name: Deploy to GKE
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Configure gcloud CLI
+      uses: google-github-actions/setup-gcloud@master
+      with:
+        version: '300.0.0'
+        service_account_email: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_EMAIL }}
+
+    - name: Install Helm
+      uses: azure/setup-helm@v1
+      with:
+        version: 3.4.0
+
+    - name: Deploy Helm chart
+      uses: google-github-actions/k8s-deploy@v1
+      with:
+        cluster_name: ${{ env.CLUSTER_NAME }}
+        namespace: ${{ env.NAMESPACE }}
+        chart_path: ./
+        wait_until_deployed: true
