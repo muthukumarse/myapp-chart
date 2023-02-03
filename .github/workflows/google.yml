@@ -27,10 +27,7 @@ jobs:
       with:
         version: 3.4.0
 
-    - name: Deploy Helm chart
-      uses: google-github-actions/k8s-deploy@v1
-      with:
-        cluster_name: ${{ env.CLUSTER_NAME }}
-        namespace: ${{ env.NAMESPACE }}
-        chart_path: ./
+    - name: Deploy Release on cluster
+      run: |
+        helm upgrade --install myapp ./
         wait_until_deployed: true
