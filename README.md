@@ -11,7 +11,7 @@
 ![Helm Install](./evidence/deploy-helm-chart-manually.png)
 
 - Check the Deployment over Google Console
-![Deployment](./evidence/connect-gke.png)
+![Deployment](./evidence/deployment-over-console.png.png)
 
 - Do port-forward to check the Service
   ```
