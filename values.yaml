@@ -1,0 +1,10 @@
+replicaCount: 1
+image:
+  repository: muthukumarse/myapp
+  tag: a6d14a176447e466f865a1dd50d7b49f8a05535c
+  pullPolicy: IfNotPresent
+service:
+  name: myapp
+  type: ClusterIP
+  externalPort: 80
+  internalPort: 8080
