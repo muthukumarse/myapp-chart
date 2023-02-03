@@ -25,6 +25,8 @@
 
 - Updated `tag` in [values.yaml](./values.yaml) to Test the change.
 
+- added standard busybox test for helm chart
+
 ## Over CD (Github Action)
 - Helm is quick way to deploy and manage the deployment artifact easier, but there other alternate as well.
 - Since github action and GKE moved forward alot, so need to do some workaround on Runner
