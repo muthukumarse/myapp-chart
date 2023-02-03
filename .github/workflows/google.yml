@@ -5,9 +5,6 @@ on:
     branches:
       - main
 
-env:
-  GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -22,11 +19,23 @@ jobs:
         version: latest
         service_account_key: ${{ env.GOOGLE_CREDENTIALS }}
 
-    - name: Install Helm
-      uses: azure/setup-helm@v1
-      with:
-        version: 3.4.0
-
-    - name: Deploy Release on cluster
+    - name: Install kubectl
       run: |
-        helm upgrade --install myapp ./
+        sudo apt-get install kubectl
+    - name: Install helm
+      run: |
+        curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
+        chmod 700 get_helm.sh
+        ./get_helm.sh      
+    - name: Deploy Release on cluster
+      env:
+        GCLOUD_KEY: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+      run: |
+        echo "$GCLOUD_KEY" | base64 --decode > ${HOME}/gcloud.json
+        gcloud auth activate-service-account --key-file=${HOME}/gcloud.json
+        gcloud auth configure-docker
+        gcloud container clusters get-credentials \
+        ${{ secrets.CLUSTER_NAME }} --zone 
+        ${{ secrets.CLUSTER_ZONE }} --project ${{ secrets.PROJECT_NAME }}
+        # install/upgrade helm chart
+        helm upgrade --install myapp ./ 
