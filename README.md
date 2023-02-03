@@ -26,4 +26,14 @@
 - Updated `tag` in [values.yaml](./values.yaml) to Test the change.
 
 ## Over CD (Github Action)
-- 
+- Helm is quick way to deploy and manage the deployment artifact easier, but there other alternate as well.
+- Since github action and GKE moved forward alot, so need to do some workaround on Runner
+- build new image over CI through `myapp` project
+- Updated `tag` in [values.yaml](./values.yaml) to Test the change.
+- Push the changes
+- CD will run automatically and deploy the latest changed image
+- First run
+  ![Source](./evidence/source-firstrun.png)
+
+  ![Output](./evidence/output-firstrun.png)
+- Second run after update

@@ -1,7 +1,7 @@
 replicaCount: 1
 image:
   repository: muthukumarse/myapp
-  tag: a6d14a176447e466f865a1dd50d7b49f8a05535c
+  tag: d3e8eb9fc3dc69a0f9125e2c7b78e3bd1e6e1688
   pullPolicy: IfNotPresent
 service:
   name: myapp
