@@ -30,4 +30,3 @@ jobs:
     - name: Deploy Release on cluster
       run: |
         helm upgrade --install myapp ./
-        wait_until_deployed: true
