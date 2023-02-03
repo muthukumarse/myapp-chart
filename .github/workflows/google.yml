@@ -17,8 +17,8 @@ jobs:
       run: |
         curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-247.0.0-linux-x86_64.tar.gz
         tar zxvf google-cloud-sdk-247.0.0-linux-x86_64.tar.gz google-cloud-sdk
-        mv /usr/lib/google-cloud-sdk /usr/lib/google-cloud-sdk-ORIG
-        mv google-cloud-sdk /usr/lib/
+        sudo mv /usr/lib/google-cloud-sdk /usr/lib/google-cloud-sdk-ORIG
+        sudo mv google-cloud-sdk /usr/lib/
         gcloud components update
         gcloud components install kubectl
         gcloud components install gke-gcloud-auth-plugin        
