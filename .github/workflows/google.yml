@@ -17,7 +17,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Configure gcloud CLI
-      uses: google-github-actions/setup-gcloud@master
+      uses: google-github-actions/setup-gcloud@v0
       with:
         version: '300.0.0'
         service_account_email: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_EMAIL }}
