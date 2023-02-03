@@ -37,3 +37,8 @@
 
   ![Output](./evidence/output-firstrun.png)
 - Second run after update
+  ![Source](./evidence/source-secondrun.png)
+
+  ![Pipeline](./evidence/deploy-secondrun.png)
+
+  ![Output](./evidence/output-secondrun.png)
