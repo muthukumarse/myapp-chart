@@ -16,11 +16,11 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Configure gcloud CLI
+    - name: Configure Google Cloud SDK
       uses: google-github-actions/setup-gcloud@v0
       with:
-        version: '300.0.0'
-        service_account_key: ${{ env.GOOGLE_APPLICATION_CREDENTIALS }}
+        version: latest
+        service_account_key: ${{ env.GOOGLE_CREDENTIALS }}
 
     - name: Install Helm
       uses: azure/setup-helm@v1
