@@ -18,11 +18,12 @@ jobs:
         curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
         chmod 700 get_helm.sh
         ./get_helm.sh      
+        
     - name: Deploy Release on cluster
+      uses: 'deliverybot/helm@v1'
+      with:
+        release: 'myapp'
+        namespace: 'default'
+        chart: './'
       env:
-        KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
-      run: |
-        mkdir -p ${HOME}/.kube
-        echo "$KUBE_CONFIG" > ${HOME}/.kube/config
-        # install/upgrade helm chart
-        helm upgrade --install myapp ./ 
+        KUBECONFIG_FILE: '${{ secrets.KUBE_CONFIG }}'      
