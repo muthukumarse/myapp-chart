@@ -28,7 +28,7 @@ jobs:
         version: 3.4.0
 
     - name: Deploy Helm chart
-      uses: google/k8s-deploy@v0
+      uses: google-github-actions/k8s-deploy@v1
       with:
         cluster_name: ${{ env.CLUSTER_NAME }}
         namespace: ${{ env.NAMESPACE }}
