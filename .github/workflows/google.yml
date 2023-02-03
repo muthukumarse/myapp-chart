@@ -20,7 +20,7 @@ jobs:
       uses: google-github-actions/setup-gcloud@v0
       with:
         version: '300.0.0'
-        service_account_email: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_EMAIL }}
+        service_account_key: ${{ env.GOOGLE_APPLICATION_CREDENTIALS }}
 
     - name: Install Helm
       uses: azure/setup-helm@v1
