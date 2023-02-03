@@ -5,6 +5,11 @@ on:
     branches:
       - main
 
+env:
+  GKE_CLUSTER: silent-oxygen-376712-gke
+  GKE_REGION: asia-southeast1 
+  GKE_PROJECT: silent-oxygen-376712
+  
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -13,17 +18,20 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Install helm
-      run: |
-        curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
-        chmod 700 get_helm.sh
-        ./get_helm.sh      
-        
-    - name: Deploy Release on cluster
-      uses: 'deliverybot/helm@v1'
+    - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
       with:
-        release: 'myapp'
-        namespace: 'default'
-        chart: './'
-      env:
-        KUBECONFIG_FILE: '${{ secrets.KUBE_CONFIG }}'      
+        version: '270.0.0'
+        service_account_email: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_EMAIL }}
+        service_account_key: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+
+    - name: Install Helm
+      run: |
+        curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
+        
+    - name: Deploy
+      run: |
+        gcloud container clusters get-credentials $GKE_CLUSTER \
+          --region $GKE_REGION \
+          --project $GKE_PROJECT
+        helm upgrade --install myapp ./ \
+          --wait
