@@ -13,19 +13,6 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Install Dependencies
-      run: |
-        curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-247.0.0-linux-x86_64.tar.gz
-        tar zxvf google-cloud-sdk-247.0.0-linux-x86_64.tar.gz google-cloud-sdk
-        sudo mv /usr/lib/google-cloud-sdk /usr/lib/google-cloud-sdk-ORIG
-        sudo mv google-cloud-sdk /usr/lib/
-        gcloud components update
-        gcloud components install kubectl
-        gcloud components install gke-gcloud-auth-plugin        
-        gke-gcloud-auth-plugin --version 
-        export USE_GKE_GCLOUD_AUTH_PLUGIN=True
-      
-
     - name: Install helm
       run: |
         curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
@@ -33,11 +20,9 @@ jobs:
         ./get_helm.sh      
     - name: Deploy Release on cluster
       env:
-        GCLOUD_KEY: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+        KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
       run: |
-        echo "$GCLOUD_KEY" | base64 --decode > ${HOME}/gcloud.json
-        gcloud auth activate-service-account --key-file=${HOME}/gcloud.json
-        gcloud auth configure-docker
-        gcloud container clusters get-credentials ${{ secrets.CLUSTER_NAME }} --region ${{ secrets.CLUSTER_REGION }} --project ${{ secrets.PROJECT_NAME }}
+        mkdir -p ${HOME}/.kube
+        echo "$KUBE_CONFIG" > ${HOME}/.kube/config
         # install/upgrade helm chart
         helm upgrade --install myapp ./ 
