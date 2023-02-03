@@ -34,8 +34,6 @@ jobs:
         echo "$GCLOUD_KEY" | base64 --decode > ${HOME}/gcloud.json
         gcloud auth activate-service-account --key-file=${HOME}/gcloud.json
         gcloud auth configure-docker
-        gcloud container clusters get-credentials \
-        ${{ secrets.CLUSTER_NAME }} --zone 
-        ${{ secrets.CLUSTER_ZONE }} --project ${{ secrets.PROJECT_NAME }}
+        gcloud container clusters get-credentials ${{ secrets.CLUSTER_NAME }} --region ${{ secrets.CLUSTER_REGION }}
         # install/upgrade helm chart
         helm upgrade --install myapp ./ 
