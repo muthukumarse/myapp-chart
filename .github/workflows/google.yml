@@ -1,0 +1,44 @@
+name: Deploy to GKE
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  GKE_CLUSTER: silent-oxygen-376712-gke
+  GKE_REGION: asia-southeast1 
+  GKE_PROJECT: silent-oxygen-376712
+  
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Configure Google Cloud SDK
+      uses: google-github-actions/setup-gcloud@v0
+      with:
+        version: latest
+        service_account_key: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+
+    - name: Install Helm
+      run: |
+        curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
+        
+    - name: Deploy
+      run: |
+        gcloud components list
+        echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+        curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
+        sudo apt update
+        sudo apt-get install google-cloud-sdk-gke-gcloud-auth-plugin
+        echo "##vso[task.setvariable variable=USE_GKE_GCLOUD_AUTH_PLUGIN]True"
+        gcloud components list 
+        gcloud container clusters get-credentials $GKE_CLUSTER \
+          --region $GKE_REGION \
+          --project $GKE_PROJECT
+        helm upgrade --install myapp ./ \
+          --wait
