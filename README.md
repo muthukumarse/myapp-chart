@@ -46,3 +46,4 @@
   ![Pipeline](./evidence/deploy-secondrun.png)
 
   ![Output](./evidence/output-secondrun.png)
+- [Pipeline to see last run](https://github.com/muthukumarse/myapp-chart/actions/runs/4086676431/jobs/7046261714)
