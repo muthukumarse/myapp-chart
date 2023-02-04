@@ -1,4 +1,5 @@
 ## Connect GKE to deploy helm chart manually
+-  Used standard `helm create chart` CLI to create new empty chart and updated based on rquirement.
 - Assume that, you have kubectl CLI installed
 - get the kubeconfig standard way
   - `gcloud container clusters get-credentials silent-oxygen-376712-gke --region asia-southeast1`
@@ -13,7 +14,7 @@
 - Check the Deployment over Google Console
 ![Deployment](./evidence/deployment-over-console.png)
 
-- Do port-forward to check the Service
+- Do port-forward to check the Service, can change the service.type in [values.yaml](./values.yaml) to expose the Service. But for testing purpose we should use port-forward to test in local to see the result better.
   ```
   gcloud container clusters get-credentials silent-oxygen-376712-gke --region asia-southeast1 --project silent-oxygen-376712 \
   && kubectl port-forward $(kubectl get pod --selector="app=myapp" --output jsonpath='{.items[0].metadata.name}') 8080:8080
@@ -26,6 +27,7 @@
 - Updated `tag` in [values.yaml](./values.yaml) to Test the change.
 
 - added standard busybox test for helm chart
+- Chart can be customized further to add Service Account, helath check on Deployment, etc. I kept only resouces request/limit.
 
 ## Over CD (Github Action)
 - Helm is quick way to deploy and manage the deployment artifact easier, but there other alternate as well.
